@@ -28,16 +28,39 @@ function handle(flags, args, p)
     const defined = {}
     const baseArgs = []
     const calls = []
+    const callPriority = []
 
     function handlePut(flagData, data)
     {
+        let call;
         switch (typeof (flagData.put))
         {
             case Array:
-                
+                call = () => {
+                    for (let i = 0; i < data.length; i++)
+                    {
+                        p[flagData.put[i]] = data[i]
+                    }
+                }
+                break
+            case Function:
+                call = flagData.put
                 break
 
+            case String:
+                p[flagData.put] = data[0]
+                break
+            
         }
+
+        let i = 0;
+        while(i < calls.length && callPriority[i] > (flagData.priority || 0))
+        {
+            i++;
+        }
+
+        calls.push(call, i)
+        callPriority.push(flagData.priority || 0, i)
     }
 
     // Base Flags
@@ -56,7 +79,7 @@ function handle(flags, args, p)
 
 
         // Getting the flag argument
-        if (flags[targetArg] || !targetArg.startsWith("-"))
+        if (flags[targetArg] && targetArg!="base")
         {
             if (defined[targetArg])
                 return `Error: Flag "${targetArg}" has already been defined`
@@ -68,7 +91,7 @@ function handle(flags, args, p)
             while(fargs.length < flags[targetArg].args)
             {
                 if (i >= args.length)
-
+                    return `Error: Invalid count of args in flag "${targetArg}"`
 
                 fargs.push(args[i])
                 i++;
