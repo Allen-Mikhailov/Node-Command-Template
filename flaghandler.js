@@ -102,6 +102,4 @@ function handle(flags, args, p)
             return `Error: Invalid flag "${targetArg}"`
         }
     }
-
-
 }
