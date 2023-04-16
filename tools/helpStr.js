@@ -3,7 +3,7 @@ const fs = require("fs")
 function funct()
 {
     let helpStr = ""
-    fs.readdirSync(__dirname).map((value) => {
+    fs.readdirSync(__dirname).map((path) => {
         if (!path.match(".*\\.js")) { return; }
         const data = require(__dirname+"/"+path)
         helpStr += ` `
@@ -11,7 +11,7 @@ function funct()
 }
 
 
-const starters = [
+const commands = [
     {
         funct: funct,
         flags: {},
@@ -21,4 +21,4 @@ const starters = [
     }
 ]
 
-exports.starters = starters
+exports.commands = commands
