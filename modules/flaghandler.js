@@ -10,7 +10,7 @@ const flags = [
         }
     },
     {
-        starters: ["base"]
+        starters: ["base"],
         args: 1,
         priority: 2,
         put: ["Thing1", "Thing2"]
@@ -24,13 +24,19 @@ function handle(flags, args, p)
     p = p || {}
 
     // Used when no arg is given
-    let baseI = 0;
-
     let i = 0;
+    const starters = {}
     const defined = {}
     const baseArgs = []
     const calls = []
     const callPriority = []
+
+    // Setting up starters
+    flags.map((flag) => {
+        flag.starters.map((starter) => {
+            starters[starter] = flag
+        })
+    })
 
     function handlePut(flagData, data)
     {
@@ -71,7 +77,7 @@ function handle(flags, args, p)
         baseArgs.push(args[i])
         i++;
     }
-    calls.push(() => handlePut(flags.base, baseArgs))
+    calls.push(() => handlePut(starters.base, baseArgs))
 
     // Regular flags
     while(i < args.length)
@@ -81,7 +87,7 @@ function handle(flags, args, p)
 
 
         // Getting the flag argument
-        if (flags[targetArg] && targetArg!="base")
+        if (starters[targetArg] && targetArg!="base")
         {
             if (defined[targetArg])
                 return `Error: Flag "${targetArg}" has already been defined`
@@ -90,7 +96,7 @@ function handle(flags, args, p)
 
             const fargs = []
             i++;
-            while(fargs.length < flags[targetArg].args)
+            while(fargs.length < starters[targetArg].args)
             {
                 if (i >= args.length)
                     return `Error: Invalid count of args in flag "${targetArg}"`
@@ -99,7 +105,7 @@ function handle(flags, args, p)
                 i++;
             }
 
-            handlePut(flags[targetArg], fargs)
+            handlePut(starters[targetArg], fargs)
         } else {
             return `Error: Invalid flag "${targetArg}"`
         }
