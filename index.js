@@ -2,7 +2,7 @@ const fs = require("fs")
 
 const { argv } = require("process")
 
-const starterArg = argv[2] || ""
+const starterArg = argv[2] || "help"
 const starters = {}
 
 fs.readdirSync(__dirname+"/tools/").map((path) => {

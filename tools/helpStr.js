@@ -1,6 +1,6 @@
 const fs = require("fs")
 
-const tab = "     "
+const indent = "  "
 const quotes = '"'
 
 function wrapList(list, mid, head, tail)
@@ -21,6 +21,15 @@ function wrapList(list, mid, head, tail)
 function funct()
 {
     let helpStr = ""
+
+    console.log()
+    console.log("Usage: ")
+    console.log(`${indent}asciis <command> [options]`)
+    console.log()
+    console.log("Commands: ")
+
+    const commands = []
+
     fs.readdirSync(__dirname).map((path) => {
         let data
         const stats = fs.lstatSync(__dirname+"/"+path)
@@ -30,10 +39,19 @@ function funct()
         data = require(__dirname+"/"+path)
         else
             return;
-        
-        data.commands.map((command) => {
-            helpStr += `${wrapList(command.starters, quotes)}\n${tab}- ${command.description}`
-        })
+
+        commands.push(data)
+    })
+
+    // Gathering length data
+    let starterLength = 0
+    let flagSize = 0
+    commands.map((command) => {
+        let starterStr = wrapList(command.starters, " ")
+        if (starterLength < starterStr.length)
+            starterLength = starterStr.length
+
+        command.flags
     })
 
     console.log(helpStr)
@@ -42,11 +60,12 @@ function funct()
 const commands = [
     {
         funct: funct,
-        flags: {
-            "-test-flag": "boby"
-        },
-        starters: ["", "help"],
-        name: "help",
+        flags: [
+            {
+                starters: ["-h", "-1"]
+            }
+        ],
+        starters: ["help", "help2"],
         description: "Gives a description of every command"
     
     }

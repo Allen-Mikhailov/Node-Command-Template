@@ -1,6 +1,7 @@
 /*
-const flags = {
-    "-e": {
+const flags = [
+    {
+        starters: ["-e"],
         args: 2,
         priority: 1,
         required: true,
@@ -8,12 +9,13 @@ const flags = {
 
         }
     },
-    "base": {
+    {
+        starters: ["base"]
         args: 1,
         priority: 2,
         put: ["Thing1", "Thing2"]
     }
-}
+]
 
 */
 
