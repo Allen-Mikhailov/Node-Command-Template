@@ -34,9 +34,9 @@ function funct()
         let data
         const stats = fs.lstatSync(__dirname+"/"+path)
         if (stats.isDirectory())
-        data = require(__dirname+"/"+path+"/index.js")
+            data = require(__dirname+"/"+path+"/index.js")
         else if (stats.isFile() && path.match(".*\\.js"))
-        data = require(__dirname+"/"+path)
+            data = require(__dirname+"/"+path)
         else
             return;
 

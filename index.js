@@ -6,9 +6,15 @@ const starterArg = argv[2] || "help"
 const starters = {}
 
 fs.readdirSync(__dirname+"/tools/").map((path) => {
-    if (!path.match(".*\\.js")) { return; }
-    const data = require(__dirname+"/tools/"+path)
-    // console.log(data)
+    let data
+    const stats = fs.lstatSync(__dirname+"/tools/"+path)
+    if (stats.isDirectory())
+        data = require(__dirname+"/tools/"+path+"/index.js")
+    else if (stats.isFile() && path.match(".*\\.js"))
+        data = require(__dirname+"/tools/"+path)
+    else
+        return;
+
     data.commands.map((command) => {
         command.starters.map((starter) => {
             starters[starter] = command.funct
