@@ -2,6 +2,7 @@ const fs = require("fs")
 
 const indent = "  "
 const quotes = '"'
+const wrapSpacer = " - "
 
 function wrapList(list, mid, head, tail)
 {
@@ -59,19 +60,19 @@ function funct()
     let starterLength = 0
     let flagSize = 0
     commands.map((command) => {
-        let starterStr = wrapList(command.starters, " ")
+        let starterStr = wrapList(command.starters, wrapSpacer)
         if (starterLength < starterStr.length)
             starterLength = starterStr.length
 
         command.flags.map((flag) => {
-            let flagStr = wrapList(flag.starters, " ")
+            let flagStr = wrapList(flag.starters, wrapSpacer)
             if (flagSize < flagStr.length)
                 flagSize = flagStr.length
         })
     })
 
     commands.map((command) => {
-        let starts = wrapList(command.starters, " ")
+        let starts = wrapList(command.starters, wrapSpacer)
         console.log(indent + starts + spaceStr(starterLength-starts.length) + " : "+ command.description)
     })
 
