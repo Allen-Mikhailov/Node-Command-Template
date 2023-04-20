@@ -18,6 +18,16 @@ function wrapList(list, mid, head, tail)
     return str
 }
 
+function spaceStr(spaces)
+{
+    let space = ""
+    for (let i = 0; i < spaces; i++)
+    {
+        space += " "
+    }
+    return space
+}
+
 function funct()
 {
     let helpStr = ""
@@ -40,7 +50,9 @@ function funct()
         else
             return;
 
-        commands.push(data)
+        data.commands.map((command) => {
+            commands.push(command)
+        })
     })
 
     // Gathering length data
@@ -51,7 +63,16 @@ function funct()
         if (starterLength < starterStr.length)
             starterLength = starterStr.length
 
-        command.flags
+        command.flags.map((flag) => {
+            let flagStr = wrapList(flag.starters, " ")
+            if (flagSize < flagStr.length)
+                flagSize = flagStr.length
+        })
+    })
+
+    commands.map((command) => {
+        let starts = wrapList(command.starters, " ")
+        console.log(indent + starts + spaceStr(starterLength-starts.length) + " : "+ command.description)
     })
 
     console.log(helpStr)
