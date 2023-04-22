@@ -8,8 +8,8 @@ const commands = [
                 description: "Does Stuff"
             }
         ],
-        starters: ["name1", "name2"],
-        description: "Gives a description of every command"
+        starters: ["test"],
+        description: "test command"
     
     }
 ]
