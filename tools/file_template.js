@@ -1,4 +1,4 @@
-const commands = [
+const command = 
     {
         funct: () => console.log("Testing"),
         flags: [
@@ -12,6 +12,5 @@ const commands = [
         description: "test command"
     
     }
-]
 
-exports.commands = commands
+exports.d = command

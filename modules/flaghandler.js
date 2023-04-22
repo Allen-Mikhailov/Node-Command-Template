@@ -19,7 +19,7 @@ const flags = [
 
 */
 
-function handle(flags, args, p)
+function flaghandler(flags, args, p)
 {
     p = p || {}
 
@@ -111,3 +111,5 @@ function handle(flags, args, p)
         }
     }
 }
+
+exports.flaghandler = flaghandler

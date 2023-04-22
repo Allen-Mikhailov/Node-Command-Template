@@ -1,4 +1,6 @@
 const fs = require("fs")
+const { flaghandler } = require("../modules/flaghandler.js")
+const { getAllCommands } = require("../modules/toolUtils.js")
 
 const indent = "  "
 const quotes = '"'
@@ -29,7 +31,44 @@ function spaceStr(spaces)
     return space
 }
 
-function funct()
+function getWrapSize(list, wrap)
+{
+    let biggestSize = 0
+    list.map((starters) => {
+        if (wrapList(starters.starters, wrap).length > biggestSize)
+            biggestSize = wrapList(list, wrap).length
+    })
+    return biggestSize
+}
+
+const command = {
+        funct: funct,
+        flags: [
+            {
+                put: ["command"],
+                starters: ["base"],
+                args: 1,
+                priority: 1,
+                required: false,
+                description: "Does Stuff"
+            }
+        ],
+        starters: ["help", "help2"],
+        description: "Gives a description of every command"
+    
+    }
+
+function printAllCommands(commands)
+{
+
+}
+
+function printCommand(command)
+{
+
+}
+
+function funct(arglist)
 {
     let helpStr = ""
 
@@ -39,37 +78,19 @@ function funct()
     console.log()
     console.log("Commands: ")
 
-    const commands = []
-
-    fs.readdirSync(__dirname).map((path) => {
-        let data
-        const stats = fs.lstatSync(__dirname+"/"+path)
-        if (stats.isDirectory())
-            data = require(__dirname+"/"+path+"/index.js")
-        else if (stats.isFile() && path.match(".*\\.js"))
-            data = require(__dirname+"/"+path)
-        else
-            return;
-
-        data.commands.map((command) => {
-            commands.push(command)
-        })
-    })
+    const commands = getAllCommands()
 
     // Gathering length data
-    let starterLength = 0
+    let starterLength = getWrapSize(commands, wrapSpacer)
     let flagSize = 0
     commands.map((command) => {
-        let starterStr = wrapList(command.starters, wrapSpacer)
-        if (starterLength < starterStr.length)
-            starterLength = starterStr.length
-
-        command.flags.map((flag) => {
-            let flagStr = wrapList(flag.starters, wrapSpacer)
-            if (flagSize < flagStr.length)
-                flagSize = flagStr.length
-        })
+        
+        let dSize = getWrapSize(command.flags, wrapSpacer)
+        if (dSize < flagSize)
+                flagSize = dSize
     })
+
+    const p = flaghandler(command, arglist)
 
     commands.map((command) => {
         let starts = wrapList(command.starters, wrapSpacer)
@@ -79,18 +100,4 @@ function funct()
     console.log(helpStr)
 }
 
-const commands = [
-    {
-        funct: funct,
-        flags: [
-            {
-                starters: ["-h", "-1"]
-            }
-        ],
-        starters: ["help", "help2"],
-        description: "Gives a description of every command"
-    
-    }
-]
-
-exports.commands = commands
+exports.d = command
